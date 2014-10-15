@@ -37,6 +37,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private boolean instruc; // Booleano para desplegar instrucciones
     private boolean gameover; // Booleano para desplegar imagen gg
     private boolean mute; // Control de sonidos
+    private boolean bPausado; // control de Pausado
     //private int score; // Puntaje del juego
     private int lives; // Vidas del jugador
     private int fouls; // Errores del jugador
@@ -105,6 +106,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         fail = new SoundClip("sounds/boing2.wav");
         goal = new SoundClip("sounds/bloop_x.wav");
         over = new SoundClip("sounds/buzzer_x.wav");
+        
+        // inicializa la varible de pausado
+        bPausado = false;
 
         addMouseListener(this);
         addKeyListener(this);
@@ -122,9 +126,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         // Guarda el tiempo actual del sistema
         tiempoActual = System.currentTimeMillis();
         while (vidas >= 0) {
+            
             checaColision();
             actualiza();
+            
             repaint();
+            
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
