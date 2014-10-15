@@ -346,7 +346,11 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
         TiroParabolico tiro = new TiroParabolico();
         tiro.setVisible(true);
     }
-
+    /**
+     * Este metodo se encarga de Guardar todos los valores necesarios.
+     *
+     * 
+     */
     public void guardaArchivo() throws IOException {
         PrintWriter prwSalida = new PrintWriter
                                 (new FileWriter("save_file.txt"));
@@ -386,6 +390,11 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
         
     }
     
+    /**
+     * Este metodo se encarga de cargar valores.
+     *
+     * 
+     */
     public void cargaArchivo() throws FileNotFoundException, IOException {
         BufferedReader brwEntrada;
         
@@ -450,11 +459,28 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
         
     	brwEntrada.close();
     }
-    @Override
+    
+    /**
+     * keyTyped
+     * 
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al presionar una 
+     * tecla que no es de accion.
+     * @param e es el <code>evento</code> que se genera en al presionar.
+     * 
+     */
     public void keyTyped(KeyEvent e) {
     }
 
-    @Override
+    /**
+     * keyPressed
+     * 
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al dejar presionada
+     * alguna tecla.
+     * @param keyEvent es el <code>evento</code> generado al presionar.
+     * 
+     */
     public void keyPressed(KeyEvent keyEvent) {
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
             iDireccionCanasta = 1;
@@ -477,7 +503,12 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
         
     }
 
-    @Override
+     /**
+     * keyReleased
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al soltar la tecla.
+     * @param e es el <code>evento</code> que se genera en al soltar las teclas.
+     */
     public void keyReleased(KeyEvent keyEvent) {
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT || 
            keyEvent.getKeyCode() == KeyEvent.VK_RIGHT ){
