@@ -129,7 +129,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
 
         // Guarda el tiempo actual del sistema
         tiempoActual = System.currentTimeMillis();
-        while (vidas >= 0) {
+        while (!gameover) {
             
             // si el juego no esta pausado
             if(!(bPausado || bInstrucciones)){
@@ -146,17 +146,13 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 System.out.println("Error en " + ex.toString());
             }
         }
-        if (vidas <= 0) {
-            gameover = true;
-            repaint();
-        }
     }
 
     /**
      * En este metodo se actualiza las posiciones del balon y de la canasta.
      */
     public void actualiza() {
-        grav = 6 - vidas / 3;
+        grav = 6 - lives / 3;
         if (click) {
             balon.setPosY(balon.getPosY() - bVely);
             bVely -= grav;
@@ -175,6 +171,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 canasta.derecha();
                 break;
             }
+        }
+        
+        if (lives <= 0) {
+            gameover = true;
+            repaint();
+            repaint();
         }
     }
 
@@ -286,33 +288,36 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      */
     public void paint1(Graphics g) {
         
-        // si no estan puestas las instrucciones...
-        // despliega todo normal
-        if (!bInstrucciones){
-            g.drawImage(background, 0, 0, this);
-            
-            if (balon.getAnimacion() != null) {
-                g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
-            }
-            if (canasta.getAnimacion() != null) {
-                g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
-            }
+        if (!gameover){
+            // si no estan puestas las instrucciones...
+            // despliega todo normal
+            if (!bInstrucciones){
+                g.drawImage(background, 0, 0, this);
 
-            //-----IMPRESION DEL TABLERO
-            g.setFont(myFont); // Aplica el estilo fuente a las string
-            g.setColor(Color.yellow);
-            g.drawString("" + score, 930, 98);
-            g.setColor(Color.red);
-            g.drawString("" + lives, 754, 99);
-            g.drawString("" + fouls, 756, 178);
-            g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
+                if (balon.getAnimacion() != null) {
+                    g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
+                }
+                if (canasta.getAnimacion() != null) {
+                    g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
+                }
+
+                //-----IMPRESION DEL TABLERO
+                g.setFont(myFont); // Aplica el estilo fuente a las string
+                g.setColor(Color.yellow);
+                g.drawString("" + score, 930, 98);
+                g.setColor(Color.red);
+                g.drawString("" + lives, 754, 99);
+                g.drawString("" + fouls, 756, 178);
+                g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
+            }
+            // si estan puestas, despliega la imagen de instrucciones
+            else {
+                g.drawImage(ins, 0, 0, this);
+            }
         }
-        // si estan puestas, despliega la imagen de instrucciones
         else {
-            g.drawImage(ins, 0, 0, this);
+            g.drawImage(gg, 0, 0, this);
         }
-        
-
 
     }
 
