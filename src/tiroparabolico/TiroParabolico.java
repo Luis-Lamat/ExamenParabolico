@@ -162,6 +162,15 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             balon.getAnimacion().actualiza(tiempoTranscurrido);
         }
         
+        // canasta no se sale de jframe ni de la mitad de la pantalla
+        if (canasta.getPosX() + canasta.getAncho() > getWidth()){
+            canasta.setPosX(getWidth() - canasta.getAncho());
+        } 
+        else if (canasta.getPosX() < getWidth() / 2) {
+            canasta.setPosX(getWidth() / 2);
+        }
+
+        
         switch (iDireccionCanasta){
             case 1:{
                 canasta.izquierda();
@@ -204,7 +213,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 fail.play();
             }
         }
-
+        
         // CANASTA VS BALON
         if (canasta.getPerimetro().intersects(balon.getPerimetro())) {
             bVelx = 0;
@@ -308,6 +317,10 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 g.setColor(Color.red);
                 g.drawString("" + lives, 754, 99);
                 g.drawString("" + fouls, 756, 178);
+                
+                // despliega si el juego esta pausado o no...
+                String strPausa = (bPausado == true) ? "P" : "";
+                g.drawString("" + strPausa, 943, 180);
             }
             // si estan puestas, despliega la imagen de instrucciones
             else {
