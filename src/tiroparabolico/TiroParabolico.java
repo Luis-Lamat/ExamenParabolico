@@ -285,22 +285,34 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
      * @param g objeto grafico
      */
     public void paint1(Graphics g) {
-        g.drawImage(background, 0, 0, this);
-        if (balon.getAnimacion() != null) {
-            g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
-        }
-        if (canasta.getAnimacion() != null) {
-            g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
-        }
+        
+        // si no estan puestas las instrucciones...
+        // despliega todo normal
+        if (!bInstrucciones){
+            g.drawImage(background, 0, 0, this);
+            
+            if (balon.getAnimacion() != null) {
+                g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
+            }
+            if (canasta.getAnimacion() != null) {
+                g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
+            }
 
-        //-----IMPRESION DEL TABLERO
-        g.setFont(myFont); // Aplica el estilo fuente a las string
-        g.setColor(Color.yellow);
-        g.drawString("" + score, 930, 98);
-        g.setColor(Color.red);
-        g.drawString("" + lives, 754, 99);
-        g.drawString("" + fouls, 756, 178);
-        g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
+            //-----IMPRESION DEL TABLERO
+            g.setFont(myFont); // Aplica el estilo fuente a las string
+            g.setColor(Color.yellow);
+            g.drawString("" + score, 930, 98);
+            g.setColor(Color.red);
+            g.drawString("" + lives, 754, 99);
+            g.drawString("" + fouls, 756, 178);
+            g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
+        }
+        // si estan puestas, despliega la imagen de instrucciones
+        else {
+            g.drawImage(ins, 0, 0, this);
+        }
+        
+
 
     }
 
