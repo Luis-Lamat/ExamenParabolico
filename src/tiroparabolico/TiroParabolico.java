@@ -528,26 +528,30 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
             iDireccionCanasta = 0;
         }
         // Si haces clic en g se Guarda
-        if(keyEvent.getKeyCode() == KeyEvent.VK_G ) {
-            
-            try {
-                guardaArchivo();
-            } catch (IOException ex) {
-                Logger.getLogger(TiroParabolico.class.getName()).
-                        log(Level.SEVERE, null, ex);
+        
+        // previene que se pueda guardar o cargar en pausa o intrucciones
+        if (!(bPausado || bInstrucciones)){
+            if(keyEvent.getKeyCode() == KeyEvent.VK_G ) {
+
+                try {
+                    guardaArchivo();
+                } catch (IOException ex) {
+                    Logger.getLogger(TiroParabolico.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
+
             }
-            
-        }
-        // Si haces clic en c  se Carga
-        if(keyEvent.getKeyCode() == KeyEvent.VK_C ) {
-            
-            try {
-                cargaArchivo();
-            } catch (IOException ex) {
-                Logger.getLogger(TiroParabolico.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
-             
+            // Si haces clic en c  se Carga
+            if(keyEvent.getKeyCode() == KeyEvent.VK_C ) {
+
+                try {
+                    cargaArchivo();
+                } catch (IOException ex) {
+                    Logger.getLogger(TiroParabolico.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
+
+            }   
         }
     }
 }
