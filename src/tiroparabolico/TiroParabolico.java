@@ -1,5 +1,6 @@
 package tiroparabolico;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,9 +11,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
-public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
+public class TiroParabolico extends JFrame implements Runnable, MouseListener, 
+        KeyListener {
 
     private Animacion animBalon; // Animacion del balon
     private Animacion cuadroCanasta; // Animacion de la canasta
@@ -70,18 +80,28 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         grav = 1;
         vidas = 14;
         datos = "";
-        background = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/nba.jpg"));
-        ins = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/ins.jpg"));
-        gg = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/gg.jpg"));
+        background = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/nba.jpg"));
+        ins = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/ins.jpg"));
+        gg = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/gg.jpg"));
 
         // Carga las imagenes de la animacion del balon
-        Image b0 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b0.png"));
-        Image b1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b1.png"));
-        Image b2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b2.png"));
-        Image b3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b3.png"));
-        Image b4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b4.png"));
-        Image b5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/b5.png"));
-        Image c = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("images/canasta.png"));
+        Image b0 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b0.png"));
+        Image b1 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b1.png"));
+        Image b2 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b2.png"));
+        Image b3 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b3.png"));
+        Image b4 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b4.png"));
+        Image b5 = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/b5.png"));
+        Image c = Toolkit.getDefaultToolkit().getImage(this.getClass().
+                getResource("images/canasta.png"));
 
         // Se crea la animacion del balon
         animBalon = new Animacion();
@@ -196,7 +216,8 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     public void checaColision() {
 
         // BALON VS JFRAME
-        Rectangle cuadro = new Rectangle(0, 0, this.getWidth(), this.getHeight());
+        Rectangle cuadro = new Rectangle(0, 0, this.getWidth(), 
+                this.getHeight());
         if (!cuadro.intersects(balon.getPerimetro())) {
             bVelx = 0;
             bVely = 0;
@@ -304,10 +325,12 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 g.drawImage(background, 0, 0, this);
 
                 if (balon.getAnimacion() != null) {
-                    g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
+                    g.drawImage(balon.animacion.getImagen(), balon.getPosX(), 
+                            balon.getPosY(), this);
                 }
                 if (canasta.getAnimacion() != null) {
-                    g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
+                    g.drawImage(canasta.animacion.getImagen(), 
+                            canasta.getPosX(), canasta.getPosY(), this);
                 }
 
                 //-----IMPRESION DEL TABLERO
@@ -316,7 +339,6 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 g.drawString("" + score, 930, 98);
                 g.setColor(Color.red);
                 g.drawString("" + lives, 754, 99);
-                g.drawString("" + fouls, 756, 178);
                 
                 // despliega si el juego esta pausado o no...
                 String strPausa = (bPausado == true) ? "P" : "";
@@ -332,17 +354,145 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
 
     }
-
     public static void main(String[] args) {
         TiroParabolico tiro = new TiroParabolico();
         tiro.setVisible(true);
     }
-
-    @Override
+    /**
+     * Este metodo se encarga de Guardar todos los valores necesarios.
+     *
+     * 
+     */
+    public void guardaArchivo() throws IOException {
+        PrintWriter prwSalida = new PrintWriter
+                                (new FileWriter("save_file.txt"));
+        
+        // guardo en  linea 1 el score
+    	prwSalida.println("Vidas: ");
+        prwSalida.println(vidas);
+        prwSalida.println("Score: ");
+        prwSalida.println(score);
+        prwSalida.println("Velocidad Balon X: ");
+        prwSalida.println(bVelx);
+        prwSalida.println("Velocidad Balon Y: ");
+        prwSalida.println(bVely);
+        prwSalida.println("Movimiento en X de la Canasta");
+        prwSalida.println(cMovx);
+        prwSalida.println("Gravedad");
+        prwSalida.println(grav);
+        prwSalida.println("Lives");
+        prwSalida.println(lives);
+        prwSalida.println("Fouls");
+        prwSalida.println(fouls);
+        prwSalida.println("pos x Canasta: ");
+        prwSalida.println(canasta.getPosX());
+        prwSalida.println("pos y Canastan: ");
+        prwSalida.println(canasta.getPosY());
+        prwSalida.println("pos x Balon: ");
+        prwSalida.println(balon.getPosX());
+        prwSalida.println("pos y Balon: ");
+        prwSalida.println(balon.getPosY());
+         prwSalida.println("Animacion: ");
+        prwSalida.println(tiempoActual);
+        prwSalida.println(click);
+        
+        prwSalida.println("END");
+        // cierro el archivo
+    	prwSalida.close();
+        
+    }
+    
+    /**
+     * Este metodo se encarga de cargar valores.
+     *
+     * 
+     */
+    public void cargaArchivo() throws FileNotFoundException, IOException {
+        BufferedReader brwEntrada;
+        
+    	try{
+            // creo el objeto de entrada a partir de un archivo de texto
+            brwEntrada = new BufferedReader(new FileReader("save_file.txt"));
+    	} catch (FileNotFoundException e){
+            // si marca error grabo las posiciones actuales
+            guardaArchivo();
+            // lo vuelvo a abrir porque el objetivo es leer datos
+            brwEntrada = new BufferedReader(new FileReader("save_file.txt"));
+    	}
+        
+        // con el archivo abierto leo los datos que estan guardados
+        // primero saco el score que esta en la linea 1
+        brwEntrada.readLine(); // lee el string de titulo para no procesarlo
+        // lee digitos
+        vidas = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        score = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        bVelx = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        bVely = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        cMovx = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        grav = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        lives = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        fouls = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        canasta.setPosX(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        canasta.setPosY(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        balon.setPosX(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        balon.setPosY(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        tiempoActual = (Long.parseLong(brwEntrada.readLine()));
+        if (brwEntrada.readLine().equals("true")) {
+            click = true;
+        }
+        else
+            click = false;
+        // lee el string END
+        brwEntrada.readLine();
+        
+    	brwEntrada.close();
+    }
+    
+    /**
+     * keyTyped
+     * 
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al presionar una 
+     * tecla que no es de accion.
+     * @param e es el <code>evento</code> que se genera en al presionar.
+     * 
+     */
     public void keyTyped(KeyEvent e) {
     }
 
-    @Override
+    /**
+     * keyPressed
+     * 
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al dejar presionada
+     * alguna tecla.
+     * @param keyEvent es el <code>evento</code> generado al presionar.
+     * 
+     */
     public void keyPressed(KeyEvent keyEvent) {
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
             iDireccionCanasta = 1;
@@ -365,12 +515,38 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         
     }
 
-    @Override
+     /**
+     * keyReleased
+     * Metodo sobrescrito de la interface <code>KeyListener</code>.<P>
+     * En este metodo maneja el evento que se genera al soltar la tecla.
+     * @param e es el <code>evento</code> que se genera en al soltar las teclas.
+     */
     public void keyReleased(KeyEvent keyEvent) {
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT || 
            keyEvent.getKeyCode() == KeyEvent.VK_RIGHT ){
             iDireccionCanasta = 0;
         }
+        // Si haces clic en g se Guarda
+        if(keyEvent.getKeyCode() == KeyEvent.VK_G ) {
+            
+            try {
+                guardaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        // Si haces clic en c  se Carga
+        if(keyEvent.getKeyCode() == KeyEvent.VK_C ) {
+            
+            try {
+                cargaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+             
+        }
     }
-
 }
