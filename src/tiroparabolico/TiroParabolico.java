@@ -132,7 +132,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         while (vidas >= 0) {
             
             // si el juego no esta pausado
-            if(!bPausado){
+            if(!(bPausado || bInstrucciones)){
                 checaColision();
                 actualiza();                
             }
@@ -322,10 +322,16 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             iDireccionCanasta = 2;
         }
         if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
-            bPausado = !bPausado;
+            // si no estan las intrucciones
+            if (!bInstrucciones){
+                bPausado = !bPausado;
+            }
         }
-        if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
-            bInstrucciones = !bInstrucciones;
+        if(keyEvent.getKeyCode() == KeyEvent.VK_I) {
+            // si no esta pausado
+            if (!bPausado){
+                bInstrucciones = !bInstrucciones;
+            }
         }
         
     }
