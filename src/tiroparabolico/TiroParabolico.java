@@ -16,6 +16,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
 
     private Animacion animBalon; // Animacion del balon
     private Animacion cuadroCanasta; // Animacion de la canasta
+    private int iDireccionCanasta;
     private Balon balon; // Objeto de la clase balon
     private Canasta canasta; // Objeto de la clase Canasta
     private long tiempoActual;  // tiempo actual
@@ -96,8 +97,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         // Balon
         balon = new Balon(100, 300, animBalon);
 
-        //Canasta
+        //Canasta & poniendo velocidad
         canasta = new Canasta(900, 680, cuadroCanasta);
+        canasta.setVelocidad(7);
 
         // Se cargan los sonidos
         fail = new SoundClip("sounds/boing2.wav");
@@ -147,6 +149,17 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
             long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
             tiempoActual += tiempoTranscurrido;
             balon.getAnimacion().actualiza(tiempoTranscurrido);
+        }
+        
+        switch (iDireccionCanasta){
+            case 1:{
+                canasta.izquierda();
+                break;
+            }
+            case 2:{
+                canasta.derecha();
+                break;
+            }
         }
     }
 
@@ -247,6 +260,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
 
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
+        
     }
 
     /**
@@ -271,6 +285,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         g.setColor(Color.red);
         g.drawString("" + lives, 754, 99);
         g.drawString("" + fouls, 756, 178);
+        g.drawString("Direccion: " + iDireccionCanasta ,500,500);
 
     }
 
@@ -284,11 +299,21 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
+            iDireccionCanasta = 1;
+        }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
+            iDireccionCanasta = 2;
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT || 
+           keyEvent.getKeyCode() == KeyEvent.VK_RIGHT ){
+            iDireccionCanasta = 0;
+        }
     }
 
 }

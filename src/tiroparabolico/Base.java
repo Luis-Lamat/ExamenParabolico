@@ -155,4 +155,29 @@ public class Base {
         this.setPosX(this.getPosX() - iVelocidad);
     }
     
+    /**
+     * setVelocidad
+     * 
+     * Metodo modificador usado para cambiar la velocidad del objeto 
+     * 
+     * @param iVelocidad es un <code>entero</code> con la velocidad del objeto.
+     * 
+     */
+    public void setVelocidad(int iVelocidad) {
+            this.iVelocidad = iVelocidad;
+    }
+
+    /**
+     * getVelocidad
+     * 
+     * Metodo de acceso que regresa la velocidad del objeto 
+     * 
+     * @return iVelocidad un <code>entero</code> con velocidad del objeto.
+     * 
+     */
+    public int getVelocidad() {
+        return iVelocidad;
+    }
+
+    
 }
