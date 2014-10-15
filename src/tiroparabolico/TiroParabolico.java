@@ -537,7 +537,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
         // Si haces clic en g se Guarda
         
         // previene que se pueda guardar o cargar en pausa o intrucciones
-        if (!(bPausado || bInstrucciones)){
+        if (!(bPausado || bInstrucciones) && !gameover){
             if(keyEvent.getKeyCode() == KeyEvent.VK_G ) {
 
                 try {
