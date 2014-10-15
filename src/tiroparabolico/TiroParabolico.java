@@ -127,9 +127,13 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         tiempoActual = System.currentTimeMillis();
         while (vidas >= 0) {
             
-            checaColision();
-            actualiza();
+            // si el juego no esta pausado
+            if(!bPausado){
+                checaColision();
+                actualiza();                
+            }
             
+            // ciclo de pintado
             repaint();
             
             try {
@@ -313,6 +317,9 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
             iDireccionCanasta = 2;
         }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
+            bPausado = !bPausado;
+        }        
     }
 
     @Override
