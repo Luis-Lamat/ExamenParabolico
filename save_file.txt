@@ -1,0 +1,17 @@
+Vidas: 
+11
+Score: 
+0
+Velocidad Balon X: 
+0
+Velocidad Balon Y: 
+0
+Movimiento en X de la Canasta
+0
+Gravedad
+3
+Lives
+4
+Fouls
+3
+END

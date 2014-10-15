@@ -1,16 +1,27 @@
 package tiroparabolico;
 
+
 import java.awt.Color;
-import javax.swing.JFrame;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
-public class TiroParabolico extends JFrame implements Runnable, MouseListener {
+public class TiroParabolico extends JFrame implements Runnable, MouseListener, KeyListener {
 
     private Animacion animBalon; // Animacion del balon
     private Animacion cuadroCanasta; // Animacion de la canasta
@@ -103,6 +114,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener {
         over = new SoundClip("sounds/buzzer_x.wav");
 
         addMouseListener(this);
+        addKeyListener(this);
         Thread th = new Thread(this);
         th.start();
     }
@@ -275,5 +287,108 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener {
         TiroParabolico tiro = new TiroParabolico();
         tiro.setVisible(true);
     }
+@Override
+    public void keyTyped(KeyEvent keyEvent) {
+    }
 
+    
+    public void keyPressed(KeyEvent keyEvent) {
+        
+    }
+
+    
+    public void keyReleased(KeyEvent keyEvent) {
+        
+        
+        // Si haces clic en g se Guarda
+        if(keyEvent.getKeyCode() == KeyEvent.VK_A ) {
+            try {
+                guardaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        // Si haces clic en c  se Carga
+        if(keyEvent.getKeyCode() == KeyEvent.VK_C && (!pausa) ) {
+            
+            try {
+                cargaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
+    }
+    public void guardaArchivo() throws IOException {
+        PrintWriter prwSalida = new PrintWriter
+                                (new FileWriter("save_file.txt"));
+        
+        // guardo en  linea 1 el score
+    	prwSalida.println("Vidas: ");
+        prwSalida.println(vidas);
+        prwSalida.println("Score: ");
+        prwSalida.println(score);
+        prwSalida.println("Velocidad Balon X: ");
+        prwSalida.println(bVelx);
+        prwSalida.println("Velocidad Balon Y: ");
+        prwSalida.println(bVely);
+        prwSalida.println("Movimiento en X de la Canasta");
+        prwSalida.println(cMovx);
+        prwSalida.println("Gravedad");
+        prwSalida.println(grav);
+        prwSalida.println("Lives");
+        prwSalida.println(lives);
+        prwSalida.println("Fouls");
+        prwSalida.println(fouls);
+        prwSalida.println("END");
+        // cierro el archivo
+    	prwSalida.close();
+        
+    }
+    
+    public void cargaArchivo() throws FileNotFoundException, IOException {
+        BufferedReader brwEntrada;
+        
+    	try{
+            // creo el objeto de entrada a partir de un archivo de texto
+            brwEntrada = new BufferedReader(new FileReader("save_file.txt"));
+    	} catch (FileNotFoundException e){
+            // si marca error grabo las posiciones actuales
+            guardaArchivo();
+            // lo vuelvo a abrir porque el objetivo es leer datos
+            brwEntrada = new BufferedReader(new FileReader("save_file.txt"));
+    	}
+        
+        // con el archivo abierto leo los datos que estan guardados
+        // primero saco el score que esta en la linea 1
+        brwEntrada.readLine(); // lee el string de titulo para no procesarlo
+        // lee digitos
+        vidas = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        score = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        bVelx = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        bVely = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        cMovx = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        grav = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        lives = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        fouls = (Integer.parseInt(brwEntrada.readLine()));
+        // lee el string END
+        brwEntrada.readLine();
+        
+    	brwEntrada.close();
+    }
 }
