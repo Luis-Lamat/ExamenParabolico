@@ -25,6 +25,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
 
     private Animacion animBalon; // Animacion del balon
     private Animacion cuadroCanasta; // Animacion de la canasta
+    private int iDireccionCanasta;
     private Balon balon; // Objeto de la clase balon
     private Canasta canasta; // Objeto de la clase Canasta
     private long tiempoActual;  // tiempo actual
@@ -45,6 +46,8 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
     private boolean instruc; // Booleano para desplegar instrucciones
     private boolean gameover; // Booleano para desplegar imagen gg
     private boolean mute; // Control de sonidos
+    private boolean bPausado; // control de Pausado
+    private boolean bInstrucciones; // control de despliego de instrucciones
     //private int score; // Puntaje del juego
     private int lives; // Vidas del jugador
     private int fouls; // Errores del jugador
@@ -105,13 +108,20 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         // Balon
         balon = new Balon(100, 300, animBalon);
 
-        //Canasta
+        //Canasta & poniendo velocidad
         canasta = new Canasta(900, 680, cuadroCanasta);
+        canasta.setVelocidad(7);
 
         // Se cargan los sonidos
         fail = new SoundClip("sounds/boing2.wav");
         goal = new SoundClip("sounds/bloop_x.wav");
         over = new SoundClip("sounds/buzzer_x.wav");
+        
+        // inicializa la variable de pausado
+        bPausado = false;
+        
+        // inicializa la variable de instrucciones
+        bInstrucciones = false;
 
         addMouseListener(this);
         addKeyListener(this);
@@ -129,9 +139,16 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         // Guarda el tiempo actual del sistema
         tiempoActual = System.currentTimeMillis();
         while (vidas >= 0) {
-            checaColision();
-            actualiza();
+            
+            // si el juego no esta pausado
+            if(!(bPausado || bInstrucciones)){
+                checaColision();
+                actualiza();                
+            }
+            
+            // ciclo de pintado
             repaint();
+            
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
@@ -156,6 +173,17 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
             long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
             tiempoActual += tiempoTranscurrido;
             balon.getAnimacion().actualiza(tiempoTranscurrido);
+        }
+        
+        switch (iDireccionCanasta){
+            case 1:{
+                canasta.izquierda();
+                break;
+            }
+            case 2:{
+                canasta.derecha();
+                break;
+            }
         }
     }
 
@@ -256,6 +284,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
 
         // Dibuja la imagen actualizada
         g.drawImage(dbImage, 0, 0, this);
+        
     }
 
     /**
@@ -265,13 +294,34 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
      * @param g objeto grafico
      */
     public void paint1(Graphics g) {
-        g.drawImage(background, 0, 0, this);
-        if (balon.getAnimacion() != null) {
-            g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
+        
+        // si no estan puestas las instrucciones...
+        // despliega todo normal
+        if (!bInstrucciones){
+            g.drawImage(background, 0, 0, this);
+            
+            if (balon.getAnimacion() != null) {
+                g.drawImage(balon.animacion.getImagen(), balon.getPosX(), balon.getPosY(), this);
+            }
+            if (canasta.getAnimacion() != null) {
+                g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
+            }
+
+            //-----IMPRESION DEL TABLERO
+            g.setFont(myFont); // Aplica el estilo fuente a las string
+            g.setColor(Color.yellow);
+            g.drawString("" + score, 930, 98);
+            g.setColor(Color.red);
+            g.drawString("" + lives, 754, 99);
+            g.drawString("" + fouls, 756, 178);
+            g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
         }
-        if (canasta.getAnimacion() != null) {
-            g.drawImage(canasta.animacion.getImagen(), canasta.getPosX(), canasta.getPosY(), this);
+        // si estan puestas, despliega la imagen de instrucciones
+        else {
+            g.drawImage(ins, 0, 0, this);
         }
+        
+
 
         //-----IMPRESION DEL TABLERO
         g.setFont(myFont); // Aplica el estilo fuente a las string
@@ -283,45 +333,13 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         g.drawString("X Balon: " + balon.getPosX(), 50, 50);
         g.drawString("Y Balon: " + balon.getPosY(), 50, 80);
 
-    }
 
+    }
     public static void main(String[] args) {
         TiroParabolico tiro = new TiroParabolico();
         tiro.setVisible(true);
     }
-@Override
-    public void keyTyped(KeyEvent keyEvent) {
-    }
 
-    
-    public void keyPressed(KeyEvent keyEvent) {
-        
-    }
-
-    
-    public void keyReleased(KeyEvent keyEvent) {
-        
-        
-        // Si haces clic en g se Guarda
-        if(keyEvent.getKeyCode() == KeyEvent.VK_A ) {
-            try {
-                guardaArchivo();
-            } catch (IOException ex) {
-                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-        }
-        // Si haces clic en c  se Carga
-        if(keyEvent.getKeyCode() == KeyEvent.VK_C && (!pausa) ) {
-            
-            try {
-                cargaArchivo();
-            } catch (IOException ex) {
-                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
-            }
-             
-        }
-    }
     public void guardaArchivo() throws IOException {
         PrintWriter prwSalida = new PrintWriter
                                 (new FileWriter("save_file.txt"));
@@ -419,5 +437,58 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         brwEntrada.readLine();
         
     	brwEntrada.close();
+    }
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
+            iDireccionCanasta = 1;
+        }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
+            iDireccionCanasta = 2;
+        }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
+            // si no estan las intrucciones
+            if (!bInstrucciones){
+                bPausado = !bPausado;
+            }
+        }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_I) {
+            // si no esta pausado
+            if (!bPausado){
+                bInstrucciones = !bInstrucciones;
+            }
+        }
+        
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+        if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT || 
+           keyEvent.getKeyCode() == KeyEvent.VK_RIGHT ){
+            iDireccionCanasta = 0;
+        }
+        // Si haces clic en g se Guarda
+        if(keyEvent.getKeyCode() == KeyEvent.VK_A ) {
+            try {
+                guardaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        // Si haces clic en c  se Carga
+        if(keyEvent.getKeyCode() == KeyEvent.VK_C && (!pausa) ) {
+            
+            try {
+                cargaArchivo();
+            } catch (IOException ex) {
+                Logger.getLogger(TiroParabolico.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
     }
 }

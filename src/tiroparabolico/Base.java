@@ -10,6 +10,7 @@ public class Base {
     
     private int posX;    //posicion en x.       
     private int posY;	//posicion en y.
+    private int iVelocidad;   // velocidad
     private ImageIcon icono;    //icono.
     Animacion animacion;
 
@@ -24,6 +25,7 @@ public class Base {
         this.posX = posX;
         this.posY = posY;
         this.animacion = animacion;
+        this.iVelocidad = 0;
     }
 
     /**
@@ -112,5 +114,70 @@ public class Base {
     public boolean intersecta (Base obj) {
         return getPerimetro().intersects(obj.getPerimetro());
     }
+    
+    /**
+     * arriba
+     * 
+     * Metodo que sube al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void arriba() {
+        this.setPosY(this.getPosY() - iVelocidad);
+    }
+    
+    /**
+     * abajo
+     * 
+     * Metodo que baja al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void abajo() {
+        this.setPosY(this.getPosY() + iVelocidad);
+    }
+    
+    /**
+     * derecha
+     * 
+     * Metodo que mueve a la derecha al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void derecha() {
+        this.setPosX(this.getPosX() + iVelocidad);
+    }
+    
+    /**
+     * izquierda
+     * 
+     * Metodo que mueve a la izquierda al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void izquierda() {
+        this.setPosX(this.getPosX() - iVelocidad);
+    }
+    
+    /**
+     * setVelocidad
+     * 
+     * Metodo modificador usado para cambiar la velocidad del objeto 
+     * 
+     * @param iVelocidad es un <code>entero</code> con la velocidad del objeto.
+     * 
+     */
+    public void setVelocidad(int iVelocidad) {
+            this.iVelocidad = iVelocidad;
+    }
+
+    /**
+     * getVelocidad
+     * 
+     * Metodo de acceso que regresa la velocidad del objeto 
+     * 
+     * @return iVelocidad un <code>entero</code> con velocidad del objeto.
+     * 
+     */
+    public int getVelocidad() {
+        return iVelocidad;
+    }
+
     
 }
