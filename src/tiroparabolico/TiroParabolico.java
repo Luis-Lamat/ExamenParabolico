@@ -38,6 +38,7 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
     private boolean gameover; // Booleano para desplegar imagen gg
     private boolean mute; // Control de sonidos
     private boolean bPausado; // control de Pausado
+    private boolean bInstrucciones; // control de despliego de instrucciones
     //private int score; // Puntaje del juego
     private int lives; // Vidas del jugador
     private int fouls; // Errores del jugador
@@ -107,8 +108,11 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         goal = new SoundClip("sounds/bloop_x.wav");
         over = new SoundClip("sounds/buzzer_x.wav");
         
-        // inicializa la varible de pausado
+        // inicializa la variable de pausado
         bPausado = false;
+        
+        // inicializa la variable de instrucciones
+        bInstrucciones = false;
 
         addMouseListener(this);
         addKeyListener(this);
@@ -319,7 +323,11 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
         }
         if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
             bPausado = !bPausado;
-        }        
+        }
+        if(keyEvent.getKeyCode() == KeyEvent.VK_P) {
+            bInstrucciones = !bInstrucciones;
+        }
+        
     }
 
     @Override
