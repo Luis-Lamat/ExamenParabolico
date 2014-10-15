@@ -10,6 +10,7 @@ public class Base {
     
     private int posX;    //posicion en x.       
     private int posY;	//posicion en y.
+    private int iVelocidad;   // velocidad
     private ImageIcon icono;    //icono.
     Animacion animacion;
 
@@ -24,6 +25,7 @@ public class Base {
         this.posX = posX;
         this.posY = posY;
         this.animacion = animacion;
+        this.iVelocidad = 0;
     }
 
     /**
@@ -111,6 +113,46 @@ public class Base {
      */
     public boolean intersecta (Base obj) {
         return getPerimetro().intersects(obj.getPerimetro());
+    }
+    
+    /**
+     * arriba
+     * 
+     * Metodo que sube al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void arriba() {
+        this.setPosY(this.getPosY() - iVelocidad);
+    }
+    
+    /**
+     * abajo
+     * 
+     * Metodo que baja al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void abajo() {
+        this.setPosY(this.getPosY() + iVelocidad);
+    }
+    
+    /**
+     * derecha
+     * 
+     * Metodo que mueve a la derecha al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void derecha() {
+        this.setPosX(this.getPosX() + iVelocidad);
+    }
+    
+    /**
+     * izquierda
+     * 
+     * Metodo que mueve a la izquierda al personaje de acuerdo a la velocidad
+     * 
+     */
+    public void izquierda() {
+        this.setPosX(this.getPosX() - iVelocidad);
     }
     
 }

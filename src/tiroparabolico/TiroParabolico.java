@@ -1,16 +1,18 @@
 package tiroparabolico;
 
 import java.awt.Color;
-import javax.swing.JFrame;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Font;
+import javax.swing.JFrame;
 
-public class TiroParabolico extends JFrame implements Runnable, MouseListener {
+public class TiroParabolico extends JFrame implements Runnable, KeyListener, MouseListener {
 
     private Animacion animBalon; // Animacion del balon
     private Animacion cuadroCanasta; // Animacion de la canasta
@@ -103,6 +105,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener {
         over = new SoundClip("sounds/buzzer_x.wav");
 
         addMouseListener(this);
+        addKeyListener(this);
         Thread th = new Thread(this);
         th.start();
     }
@@ -274,6 +277,18 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener {
     public static void main(String[] args) {
         TiroParabolico tiro = new TiroParabolico();
         tiro.setVisible(true);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 
 }
