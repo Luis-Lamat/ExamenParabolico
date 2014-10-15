@@ -280,6 +280,8 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         g.setColor(Color.red);
         g.drawString("" + lives, 754, 99);
         g.drawString("" + fouls, 756, 178);
+        g.drawString("X Balon: " + balon.getPosX(), 50, 50);
+        g.drawString("Y Balon: " + balon.getPosY(), 50, 80);
 
     }
 
@@ -341,6 +343,17 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         prwSalida.println(lives);
         prwSalida.println("Fouls");
         prwSalida.println(fouls);
+        prwSalida.println("pos x Canasta: ");
+        prwSalida.println(canasta.getPosX());
+        prwSalida.println("pos y Canastan: ");
+        prwSalida.println(canasta.getPosY());
+        prwSalida.println("pos x Balon: ");
+        prwSalida.println(balon.getPosX());
+        prwSalida.println("pos y Balon: ");
+        prwSalida.println(balon.getPosY());
+         prwSalida.println("Animacion: ");
+        prwSalida.println(tiempoActual);
+        
         prwSalida.println("END");
         // cierro el archivo
     	prwSalida.close();
@@ -386,6 +399,22 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener, K
         brwEntrada.readLine();
         // lee digitos
         fouls = (Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        canasta.setPosX(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        canasta.setPosY(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        balon.setPosX(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        balon.setPosY(Integer.parseInt(brwEntrada.readLine()));
+        brwEntrada.readLine();
+        // lee digitos
+        tiempoActual = (Long.parseLong(brwEntrada.readLine()));
+        
         // lee el string END
         brwEntrada.readLine();
         

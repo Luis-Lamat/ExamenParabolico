@@ -1,17 +1,27 @@
 Vidas: 
-11
+14
 Score: 
 0
 Velocidad Balon X: 
-0
+16
 Velocidad Balon Y: 
-0
+-40
 Movimiento en X de la Canasta
 0
 Gravedad
-3
+2
 Lives
-4
+5
 Fouls
 3
+pos x Canasta: 
+900
+pos y Canastan: 
+680
+pos x Balon: 
+564
+pos y Balon: 
+590
+Animacion: 
+1413392458035
 END
