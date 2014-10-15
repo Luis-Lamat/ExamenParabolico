@@ -339,6 +339,7 @@ public class TiroParabolico extends JFrame implements Runnable, MouseListener,
                 g.drawString("" + score, 930, 98);
                 g.setColor(Color.red);
                 g.drawString("" + lives, 754, 99);
+                g.drawString("" + fouls, 756, 178);
                 
                 // despliega si el juego esta pausado o no...
                 String strPausa = (bPausado == true) ? "P" : "";
