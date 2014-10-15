@@ -1,3 +1,10 @@
+/**
+ * TiroParabolico Examen Parcial 2
+ *
+ * @author Luis Alberto Lamadrid - A01191158  
+ * @author Jeronimo Martinez - A01191487
+ */
+
 package tiroparabolico;
 
 
