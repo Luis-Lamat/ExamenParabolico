@@ -308,7 +308,6 @@ public class TiroParabolico extends JFrame implements Runnable, KeyListener, Mou
                 g.setColor(Color.red);
                 g.drawString("" + lives, 754, 99);
                 g.drawString("" + fouls, 756, 178);
-                g.drawString("Movimiento: " + iDireccionCanasta ,30,60);
             }
             // si estan puestas, despliega la imagen de instrucciones
             else {
